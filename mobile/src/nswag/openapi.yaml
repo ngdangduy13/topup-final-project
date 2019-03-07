@@ -1,0 +1,1229 @@
+openapi: 3.0.0
+info:
+  title: Swagger Lumileds
+  description: Lumileds Quiz API
+  contact:
+    email: thinhtran@techkids.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 0.3.0
+servers:
+  - url: 'https://lumileds.techkids.io/api'
+tags:
+  - name: auth
+    description: Authentication and authorization
+  - name: users
+    description: Operations about users
+  - name: quizzes
+    description: Operations about quizzes
+  - name: scoreboard
+    description: Operations about scoreboard
+paths:
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register new account
+      operationId: register
+      requestBody:
+        $ref: '#/components/requestBodies/RegisterDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login
+      operationId: login
+      requestBody:
+        $ref: '#/components/requestBodies/LoginDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResultDTO'
+  /auth/forgotpassword:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - auth
+      summary: Forgot password
+      operationId: forgotPassword
+      requestBody:
+        $ref: '#/components/requestBodies/ForgotPasswordDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  /auth/resetpassword:
+    post:
+      tags:
+        - auth
+      summary: Reset password
+      operationId: resetPassword
+      requestBody:
+        $ref: '#/components/requestBodies/ResetPasswordDTO'
+      responses:
+        '200':
+          description: Success! Your password has been changed.
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  /users:
+    get:
+      security:
+            - Bearer: []
+      tags:
+        - users
+      summary: Find users
+      operationId: findUsers
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: searchTerm
+          in: query
+          description: search by username or email
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: role
+          in: query
+          description: search by role
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pageIndex
+          in: query
+          description: the current page index
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: items in each page
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: sortBy
+          in: query
+          description: field name to sort
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: sortAsc
+          in: query
+          description: sort ascending or descending
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersDTO'
+  '/users/{userId}/updateroles':
+    post:
+      security:
+            - Bearer: []
+      tags:
+        - users
+      summary: Update roles
+      operationId: updateRoles
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateRolesDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  '/users/{userId}/redeempoints':
+    post:
+      security:
+            - Bearer: []
+      tags:
+        - users
+      summary: Redeem reward points
+      operationId: redeemPoints
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/RedeemPointsDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  '/users/{userId}/cancelredeempoints':
+    post:
+      security:
+            - Bearer: []
+      tags:
+        - users
+      summary: Cancel redeeming reward points
+      operationId: cancelredeemPoints
+      parameters:
+        - name: userId
+          in: path
+          description: userId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/CancelRedeemPointsDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  /quizzes:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      summary: Find quizzes
+      operationId: getAllQuizzes
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: searchTerm
+          in: query
+          description: search by name
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          description: search by quiz state
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pageIndex
+          in: query
+          description: the current page index
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: items in each page
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: sortBy
+          in: query
+          description: field name to sort
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: sortAsc
+          in: query
+          description: sort ascending or descending
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizzesDTO'
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      parameters: 
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      summary: Create new quiz
+      operationId: createQuiz
+      requestBody:
+        $ref: '#/components/requestBodies/CreateQuizDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  '/quizzes/{quizId}':
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      summary: Get quiz by id
+      operationId: findQuizz
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: quizId
+          in: path
+          description: quizId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuizDTO'
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      summary: Update quiz
+      operationId: updateQuiz
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: quizId
+          in: path
+          description: quizId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/CreateQuizDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      summary: Remove quiz
+      operationId: deleteQuiz
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: quizId
+          in: path
+          description: quizId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+  '/quizzes/{quizId}/scoreboard':
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      summary: Get quiz's scoreboard
+      operationId: getQuizScoreboard
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: quizId
+          in: path
+          description: quizId
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: userId
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pageIndex
+          in: query
+          description: the current page index
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: items in each page
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreboardDTO'
+  '/quizzes/submitanswers':
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      summary: Submit answer
+      operationId: submitQuizAnswers
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/SubmitQuizAnswersDTO'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: invalid input
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitQuizAnswersResultDTO'
+  /quizzes/uploadImage:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - quizzes
+      parameters: 
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      summary: Upload quiz image
+      operationId: uploadQuizImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/body'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                type: string
+                description: image url
+                example: /images/8034455b-1076-4cac-a732-c413c234b666.jpg
+  /scoreboard:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - scoreboard
+      summary: Get scoreboard
+      operationId: getScoreboard
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: quizId
+          in: query
+          description: quizId
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: userId
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: pageIndex
+          in: query
+          description: the current page index
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          description: items in each page
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+        - name: sortBy
+          in: query
+          description: field name to sort
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: sortAsc
+          in: query
+          description: sort ascending or descending
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreboardDTO'
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - scoreboard
+      summary: Update Scoreboard
+      operationId: updateScoreboard
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: userId
+          required: true
+          schema:
+            type: string
+        - name: quizId
+          in: query
+          description: quizId
+          required: true
+          schema:
+            type: string
+        - name: points
+          in: query
+          description: points
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          description: Token is invalid or expired
+        '500':
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreboardDTO'
+components:
+  securitySchemes:
+      Bearer:
+        type: apiKey
+        name: Authorization
+        in: header
+  schemas:
+    RegisterDTO:
+      required:
+        - email
+        - password
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: thinhtran
+        email:
+          type: string
+          example: thinhtran@techkids.io
+        password:
+          type: string
+          example: password
+    LoginDTO:
+      required:
+        - password
+        - usernameOrEmail
+      type: object
+      properties:
+        usernameOrEmail:
+          type: string
+          example: thinhtran
+        password:
+          type: string
+          example: password
+    LoginResultDTO:
+      type: object
+      properties:
+        token:
+          type: string
+          example: jwt-token
+      xml:
+        name: LoginDTO
+    ForgotPasswordDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          example: thinhtran@techkids.io
+    ResetPasswordDTO:
+      type: object
+      properties:
+        password:
+          type: string
+          example: Abc@12345
+        email:
+          type: string
+          example: Abc@gmail.com
+    UsersDTO:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+          example: 100
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsersDTO_data'
+    UpdateRolesDTO:
+      type: object
+      properties:
+        roles:
+          type: array
+          example:
+            - admin
+          items:
+            type: string
+    RedeemPointsDTO:
+      type: object
+      properties:
+        point:
+          type: integer
+          format: int32
+          example: 100
+        reason:
+          type: string
+          example: exchange for product E
+    CancelRedeemPointsDTO:
+      type: object
+      properties:
+        redemptionId:
+          type: string
+          example: 1241j12h125g125g12
+    QuizzesDTO:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+          example: 100
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuizzesDTO_data'
+    CreateQuizDTO:
+      type: object
+      properties:
+        coverImageUrl:
+          type: string
+          example: /images/121215.jpg
+        title:
+          type: string
+          example: the first quiz
+        description:
+          type: string
+          example: quiz description
+        state:
+          type: string
+          example: DRAFT/PUBLISHED
+        beacon:
+          $ref: '#/components/schemas/QuizzesDTO_beacon'
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateQuizDTO_questions'
+    QuizDTO:
+      type: object
+      properties:
+        questionCount:
+          type: integer
+          format: int32
+          example: 10
+        _id:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        coverImageUrl:
+          type: string
+          example: /images/121215.jpg
+        title:
+          type: string
+          example: the first quiz
+        description:
+          type: string
+          example: quiz description
+        state:
+          type: string
+          example: DRAFT/PUBLISHED
+        createdAt:
+          type: integer
+          format: int32
+        beacon:
+          $ref: '#/components/schemas/QuizzesDTO_beacon'
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuizzesDTO_questions'
+    ScoreboardDTO:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int32
+          example: 100
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScoreboardDTO_data'
+    SubmitQuizAnswersDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        quizId:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitQuizAnswersDTO_answers'
+    SubmitQuizAnswersResultDTO:
+      type: object
+      properties:
+        correctAnswerCount:
+          type: integer
+          format: int32
+          example: 6
+        points:
+          type: integer
+          format: int32
+          example: 6
+    body:
+      type: object
+      properties:
+        fileName:
+          type: string
+          format: binary
+    UsersDTO_data:
+      type: object
+      properties:
+        _id: 
+          type: string
+          example: 4ddde319cf4cc467858e8152b58b3283
+        username:
+          type: string
+          example: thinhtran
+        email:
+          type: string
+          example: thinhtran@techkids.io
+        profileImgUrl:
+          type: string
+          example: 4ddde319cf4cc467858e8152b58b3283.jpg
+        fullName:
+          type: string
+          example: Nguyen Van A
+        i18n:
+          type: string
+          example: vi
+        roles:
+          type: array
+          example:
+            - Administrator
+            - QuizzMastter
+          items:
+            type: string
+        scorePoint:
+          type: integer
+          format: int32
+          example: 1200
+        rewardPoint:
+          type: integer
+          format: int32
+          example: 1000
+        createdAt:
+          type: integer
+          format: int32
+    QuizzesDTO_beacon:
+      type: object
+      properties:
+        isActive:
+          type: boolean
+        uuid:
+          type: string
+          example: 12411g24215125g12g12
+        major:
+          type: string
+          example: '10'
+        minor:
+          type: string
+          example: '10'
+    QuizzesDTO_answers:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 0/1/2/3
+        décription:
+          type: string
+          example: answer 1
+        isCorrect:
+          type: boolean
+    QuizzesDTO_questions:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        coverType:
+          type: string
+          example: IMAGE/VIDEO
+        coverUrl:
+          type: string
+          example: images/8034455b-1076-4cac-a732-c413c234b666.jpg
+        description:
+          type: string
+          example: question description
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuizzesDTO_answers'
+    QuizzesDTO_data:
+      type: object
+      properties:
+        questionCount:
+          type: integer
+          format: int32
+          example: 10
+        _id:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        coverImageUrl:
+          type: string
+          example: /images/121215.jpg
+        title:
+          type: string
+          example: the first quiz
+        description:
+          type: string
+          example: quiz description
+        state:
+          type: string
+          example: DRAFT/PUBLISHED
+        createdAt:
+          type: integer
+          format: int32
+        beacon:
+          $ref: '#/components/schemas/QuizzesDTO_beacon'
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuizzesDTO_questions'
+    CreateQuizDTO_answers:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 0/1/2/3
+        description:
+          type: string
+          example: answer 1
+        isCorrect:
+          type: boolean
+    CreateQuizDTO_questions:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        coverType:
+          type: string
+          example: IMAGE/VIDEO
+        coverUrl:
+          type: string
+          example: images/8034455b-1076-4cac-a732-c413c234b666.jpg
+        description:
+          type: string
+          example: question description
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateQuizDTO_answers'
+    ScoreboardDTO_data:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        name:
+          type: string
+          example: Thinh Tran
+        points:
+          type: integer
+          format: int32
+          example: 1000
+    SubmitQuizAnswersDTO_answers:
+      type: object
+      properties:
+        questionId:
+          type: string
+          example: 8034455b-1076-4cac-a732-c413c234b666
+        answerId:
+          type: number
+          example: 0/1/2/3
+  requestBodies:
+    RegisterDTO:
+      description: Register params
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegisterDTO'
+      required: true
+    LoginDTO:
+      description: Login params
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginDTO'
+      required: true
+    ForgotPasswordDTO:
+      description: Forgot Password params
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ForgotPasswordDTO'
+      required: true
+    ResetPasswordDTO:
+      description: Reset Password params
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ResetPasswordDTO'
+      required: true
+    UpdateRolesDTO:
+      description: Update roles params
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateRolesDTO'
+      required: true
+    RedeemPointsDTO:
+      description: Redeem points
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RedeemPointsDTO'
+      required: true
+    CancelRedeemPointsDTO:
+      description: Cancel Redeem points
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CancelRedeemPointsDTO'
+      required: true
+    CreateQuizDTO:
+      description: Cancel Redeem points
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateQuizDTO'
+      required: true
+    QuizDTO:
+      description: Cancel Redeem points
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/QuizDTO'
+      required: true
+    SubmitQuizAnswersDTO:
+      description: Cancel Redeem points
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SubmitQuizAnswersDTO'
+      required: true

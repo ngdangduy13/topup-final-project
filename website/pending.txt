@@ -1,0 +1,8 @@
+1. configuration
+2. auth
+3. logger => finished
+4. event handler => to-do
+5. mongo => ok
+6. client
+7. ssr
+8. unit test

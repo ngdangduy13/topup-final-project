@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>809846546437-i53b0o2svgtggegdk104rcrm9f9f1740.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.809846546437-i53b0o2svgtggegdk104rcrm9f9f1740</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC2T-BY-mE3rGCJMwMxIq36cUxXPf1u1g8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>809846546437</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.techkids.lumiledse</string>
+	<key>PROJECT_ID</key>
+	<string>techkids-ac7a7</string>
+	<key>STORAGE_BUCKET</key>
+	<string>techkids-ac7a7.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:809846546437:ios:1fb0623114da33be</string>
+	<key>DATABASE_URL</key>
+	<string>https://techkids-ac7a7.firebaseio.com</string>
+</dict>
+</plist>

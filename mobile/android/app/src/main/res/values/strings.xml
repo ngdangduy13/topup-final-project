@@ -1,0 +1,6 @@
+<resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">yqdAJmL6Qns62A-aC1oZHA8vVG_n939944c9-dadf-4b54-bf5e-12c433365a6c</string>
+    <string name="app_name">TechQuiz</string>
+
+    <string name="facebook_app_id">1842008296094931</string>
+</resources>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "809846546437",
+    "firebase_url": "https://techkids-ac7a7.firebaseio.com",
+    "project_id": "techkids-ac7a7",
+    "storage_bucket": "techkids-ac7a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809846546437:android:1fb0623114da33be",
+        "android_client_info": {
+          "package_name": "com.techkids.techquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809846546437-edm3c5a2v55ukfgruceme0aa8upn0crd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBctOkeRuFM1m46JWXBL0pAy3sEY_WuuU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

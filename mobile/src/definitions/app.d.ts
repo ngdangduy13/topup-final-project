@@ -1,0 +1,16 @@
+declare module 'react-native-pie';
+declare module '@rematch/select';
+declare module '@rematch/react-navigation';
+declare module 'redux-persist/lib/storage';
+declare module 'redux-persist/lib/integration/react';
+declare module 'react-native-modal-dropdown';
+declare module 'react-native-material-dropdown';
+declare module 'react-native-svg';
+declare module 'react-native-modest-checkbox';
+declare module 'react-native-spinkit';
+declare module 'react-navigation-fluid-transitions';
+declare module 'react-native-motion';
+declare module 'react-native-status-bar-height';
+declare module 'rn-content-loader';
+declare module 'react-native-fast-image';
+declare module '*.json';
