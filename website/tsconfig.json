@@ -7,11 +7,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "es5",
-      "es6"
-    ],
+    "lib": ["dom", "es5", "es6"],
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -28,15 +24,8 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "esnext",
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types"]
   },
-  "include": [
-    "api/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "*/.spec.ts"
-  ]
+  "include": ["api/**/*.ts"],
+  "exclude": ["node_modules", "*/.spec.ts"],
 }

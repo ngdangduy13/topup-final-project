@@ -1,11 +1,23 @@
-export default class UserPermissions {
-  public static readonly USERS_VIEW: string = 'Users.View';
-  public static readonly USERS_CREATE: string = 'Users.Create';
-  public static readonly USERS_EDIT: string = 'Users.Edit';
-  public static readonly USERS_CHANGEPERMISSIONS: string = 'Users.ChangePermissions';
+export const UserPermissions = {
+  USERS_VIEW: 'Users.View',
+  USERS_CREATE: 'Users.Create',
+  USERS_EDIT: 'Users.Edit',
+  USERS_CHANGEPERMISSIONS: 'Users.ChangePermissions',
 
-  public static readonly ROLES_VIEW: string = 'Roles.View';
-  public static readonly ROLES_CREATE: string = 'Roles.Create';
-  public static readonly ROLES_EDIT: string = 'Roles.Edit';
-  public static readonly ROLES_DELETE: string = 'Roles.Delete';
+  ROLES_VIEW: 'Roles.View',
+  ROLES_CREATE: 'Roles.Create',
+  ROLES_EDIT: 'Roles.Edit',
+  ROLES_DELETE: 'Roles.Delete',
+
+  QUIZZ_VIEW: 'Quizz.View',
+  QUIZZ_CREATE: 'Quizz.Create',
+  QUIZZ_EDIT: 'Quizz.Edit',
+  QUIZZ_DELETE: 'Quizz.Delete',
+}
+
+export const QuizzMasterPermissions = {
+  QUIZZ_VIEW: 'Quizz.View',
+  QUIZZ_CREATE: 'Quizz.Create',
+  QUIZZ_EDIT: 'Quizz.Edit',
+  QUIZZ_DELETE: 'Quizz.Delete',
 }

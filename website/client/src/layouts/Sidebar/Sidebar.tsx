@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Menu, Icon } from 'antd';
-import { Link } from 'react-router-dom';
 import Logo from '../Logo/Logo';
 // import SmallLogo from '../SmallLogo/SmallLogo';
 import './Sidebar.less';
@@ -9,6 +8,8 @@ import './Sidebar.less';
 // import { AppState } from '../../redux';
 // import { connect } from 'react-redux';
 // import { Dispatch } from 'redux';
+import Link from 'next/link';
+
 import sidebarMenu from '../../constants/sidebar.constant';
 // import { checkOnePermission, checkAllPermissions } from '../../helpers';
 // import { I18nextProviderProps } from 'react-i18next/src/I18nextProvider';
@@ -37,10 +38,10 @@ class Sidebar extends React.Component<SidebarProps, any> {
           title={
             <span>
               <Icon type={submenu.icon} />
-              <span>{submenu.key}</span>
+              <span>{submenu.title}</span>
             </span>
           }
-          className='submenu'
+          className="submenu"
         >
           {submenu.items.map((item: any) => this.renderMenuItem(item))}
         </Menu.SubMenu>
@@ -56,7 +57,7 @@ class Sidebar extends React.Component<SidebarProps, any> {
     ) {
       return (
         <Menu.Item key={`${menuitem.key}`}>
-          <Link to={menuitem.path}>
+          <Link href={menuitem.path}>
             <span>{menuitem.title}</span>
           </Link>
         </Menu.Item>
@@ -72,19 +73,23 @@ class Sidebar extends React.Component<SidebarProps, any> {
     //   : { openKeys: this.props.openKeys };
 
     return (
-      <div className='sidebar-menu'>
+      <div className="sidebar-menu">
         {/* {this.props.isSidebarCollapsed ? <SmallLogo /> : <Logo />} */}
         <Logo />
         <Menu
-          key='Menu'
-          theme='dark'
-          mode='inline'
+          key="Menu"
+          theme="dark"
+          mode="inline"
           // {...openKeys}
           onOpenChange={this.handleOpenChange}
           // selectedKeys={[this.props.history.location.pathname]}
-          style={{ padding: '16px 0', width: '100%', position: 'relative' }}
+          style={{
+            padding: '16px 0',
+            width: '100%',
+            position: 'relative',
+          }}
         >
-          {sidebarMenu.map((submenu) => this.renderSubmenu(submenu))}
+          {sidebarMenu.map(submenu => this.renderSubmenu(submenu))}
         </Menu>
       </div>
     );

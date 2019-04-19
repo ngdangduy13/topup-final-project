@@ -68,6 +68,7 @@ class UserList extends React.Component<UserListProps, any> {
             title: 'Score Point',
             dataIndex: 'scorePoint' as 'scorePoint',
             key: 'scorePoint',
+            align: 'center' as 'center',
             className: 'numberInput',
             width: '12%',
             render: (_text: any, item: any, _index: any) => (
@@ -80,6 +81,7 @@ class UserList extends React.Component<UserListProps, any> {
             dataIndex: 'rewardPoint' as 'rewardPoint',
             key: 'rewardPoint',
             width: '12%',
+            align: 'center' as 'center',
             className: 'numberInput',
             render: (_text: any, item: any, _index: any) => (
                 <span>
