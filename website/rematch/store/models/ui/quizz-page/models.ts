@@ -17,7 +17,7 @@ const initialState = {
   },
 
   quizzListPageIndex: '',
-  quizzListPageOrientation: false,
+  quizzListPageOrientation: true,
   pageSize: 10,
   sortBy: '',
 

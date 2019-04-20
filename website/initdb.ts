@@ -48,9 +48,41 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
   // tslint:disable-next-line:max-line-length
   const nouns = ['ninja', 'chair', 'pancake', 'statue', 'unicorn', 'rainbows', 'laser', 'senor', 'bunny', 'captain', 'nibblets', 'cupcake', 'carrot', 'gnomes', 'glitter', 'potato', 'salad', 'toejam', 'curtains', 'beets', 'toilet', 'exorcism', 'stick figures', 'mermaid eggs', 'sea barnacles', 'dragons', 'jellybeans', 'snakes', 'dolls', 'bushes', 'cookies', 'apples', 'ice cream', 'ukulele', 'kazoo', 'banjo', 'opera singer', 'circus', 'trampoline', 'carousel', 'carnival', 'locomotive', 'hot air balloon', 'praying mantis', 'animator', 'artisan', 'artist', 'colorist', 'inker', 'coppersmith', 'director', 'designer', 'flatter', 'stylist', 'leadman', 'limner', 'make-up artist', 'model', 'musician', 'penciller', 'producer', 'scenographer', 'set decorator', 'silversmith', 'teacher', 'auto mechanic', 'beader', 'bobbin boy', 'clerk of the chapel', 'filling station attendant', 'foreman', 'maintenance engineering', 'mechanic', 'miller', 'moldmaker', 'panel beater', 'patternmaker', 'plant operator', 'plumber', 'sawfiler', 'shop foreman', 'soaper', 'stationary engineer', 'wheelwright', 'woodworkers'];
 
-  const existedAdmin = await User.findOne({ email: 'admin@email.com' }).exec();
-  if (existedAdmin) {
-    await User.deleteOne({ _id: existedAdmin._id }).exec();
+  const existedAdmin = await User.findOne({ email: 'admin@gmail.com' }).exec();
+  if (!existedAdmin) {
+    const admin = new User({
+      password: bcrypt.hashSync('123456', '123456'.length),
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: `admin@gmail.com`,
+      fullName: '',
+      normalizedFullName: '',
+      externalLogin: {
+        google: {
+          id: '',
+          email: '',
+        },
+        facebook: {
+          id: '',
+          email: '',
+        },
+      },
+      permissions: Object.keys(UserPermissions).map((key) => UserPermissions[key]),
+      roles: ['QUIZZ_MASTER', 'ADMINISTRATOR'],
+      isActive: true,
+      isLocked: false,
+      failLoginTryCount: 0,
+      emailConfirmed: true,
+      language: 'en',
+      username: `Duy Nguyen`,
+      scorePoint: 0,
+      rewardPoint: 1000,
+      resetPasswordToken: '',
+      createdAt: new Date(),
+      resetPasswordExpires: new Date(0),
+    });
+    await admin.save();
   }
   for (let i = 0; i < 10; i++) {
     const admin = new User({
@@ -90,7 +122,7 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
   }
   for (let i = 0; i < 10; i++) {
     const quizz = new Quizz({
-      coverImageUrl: 'https://pixabay.com/en/santa-christmas-santa-claus-2563805',
+      coverImageUrl: '/static/temps/images/santa.jpg',
       title: `Santa Claus: How much do you know about him?${++i}`,
       description: 'Jovial, generous, legendary, white-breaded - it\'s all about him, Santa Claus! How much exactly do you know about Santa? Test your knowledge in this #Christmas quiz. Ho-ho-ho!',
       state: 'PUBLISHED',
@@ -126,13 +158,13 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
           ],
           id: 0,
           coverType: 'IMAGE',
-          coverUrl: 'https://lumileds.techkids.io/static/temps/images/84fcff56aa6c7cfb28e0cbe9ea3ca680.jpeg',
+          coverUrl: '/static/temps/images/santa.jpg',
           description: 'It was ___ settlers who brought the Santa Claus tradition to America',
         },
         {
           id: 1,
           coverType: 'IMAGE',
-          coverUrl: 'https://lumileds.techkids.io/static/temps/images/a8fe9e37df2a63054f15091e7e5a6436.jpeg',
+          coverUrl: '/static/temps/images/santa.jpg',
           description: 'When was the name \'Santa Claus\' used for the first time in America?',
           answers: [
             {
@@ -160,7 +192,7 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
         {
           id: 2,
           coverType: 'IMAGE',
-          coverUrl: 'https://lumileds.techkids.io/static/temps/images/a8fe9e37df2a63054f15091e7e5a6436.jpeg',
+          coverUrl: '/static/temps/images/santa.jpg',
           description: 'The figure of Santa Claus is based on St. Nicholas who lived in the 4th century. Where exactly?',
           answers: [
             {
@@ -188,7 +220,7 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
         {
           id: 3,
           coverType: 'IMAGE',
-          coverUrl: 'https://lumileds.techkids.io/static/temps/images/a8fe9e37df2a63054f15091e7e5a6436.jpeg',
+          coverUrl: '/static/temps/images/santa.jpg',
           description: 'Where is today\'s Santa\'s home said to be?',
           answers: [
             {
@@ -227,8 +259,8 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
     `
     FINISH
     You Can Log In As:
-      email: anhvu@techkids.io
-      password: Abc@12345
+      email: admin@gmail.io
+      password: 123456
     `,
   );
   process.exit();

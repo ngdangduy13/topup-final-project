@@ -5,8 +5,11 @@ import './quizz-list.less';
 import { QuizzPageState } from '../../../../rematch/store/models/ui/quizz-page/state';
 import moment from 'moment';
 import Router from 'next/router';
+import AddQuizz from './add-quizz';
 export interface QuizzListProps {
   quizzPageModels: QuizzPageState;
+  fetchListQuizz: (payload: any) => void;
+
 }
 
 class QuizzList extends React.Component<QuizzListProps, any> {
@@ -108,6 +111,7 @@ class QuizzList extends React.Component<QuizzListProps, any> {
   render(): JSX.Element {
     return (
       <div>
+        <AddQuizz {...this.props} />
         <Table
           loading={this.props.quizzPageModels.isBusy}
           dataSource={this.props.quizzPageModels.listQuizz.data}

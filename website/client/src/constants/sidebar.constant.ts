@@ -19,7 +19,7 @@ export interface Submenu {
 
 const sidebarMenu: Submenu[] = [
   {
-    key: 'user-management',
+    key: '/admin/users',
     title: 'Users',
     permissions: [UserPermissions.USERS_VIEW, UserPermissions.ROLES_VIEW],
     icon: 'user',
@@ -27,7 +27,7 @@ const sidebarMenu: Submenu[] = [
     path: '/admin/users',
   },
   {
-    key: 'quizzes',
+    key: '/admin/quizzes',
     title: 'Quizzes',
     permissions: [],
     icon: 'question',
