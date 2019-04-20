@@ -14,10 +14,3 @@ export const UserPermissions = {
   QUIZZ_EDIT: 'Quizz.Edit',
   QUIZZ_DELETE: 'Quizz.Delete',
 }
-
-export const QuizzMasterPermissions = {
-  QUIZZ_VIEW: 'Quizz.View',
-  QUIZZ_CREATE: 'Quizz.Create',
-  QUIZZ_EDIT: 'Quizz.Edit',
-  QUIZZ_DELETE: 'Quizz.Delete',
-}

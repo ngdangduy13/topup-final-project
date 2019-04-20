@@ -52,7 +52,7 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
   if (existedAdmin) {
     await User.deleteOne({ _id: existedAdmin._id }).exec();
   }
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     const admin = new User({
       password: bcrypt.hashSync('Abc@12345', 'Abc@12345'.length),
       firstName: '',
@@ -88,7 +88,7 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
     await admin.save();
 
   }
-  for (let i = 0; i < 20000; i++) {
+  for (let i = 0; i < 10; i++) {
     const quizz = new Quizz({
       coverImageUrl: 'https://pixabay.com/en/santa-christmas-santa-claus-2563805',
       title: `Santa Claus: How much do you know about him?${++i}`,

@@ -1,16 +1,28 @@
 import * as Joi from 'joi';
 import * as bcrypt from 'bcryptjs';
 import usersRepository from './repository';
-import { IFindUsersQuery, IFindUsersResult, IFindUserDetail, ICreateUserInput, IActivateUser, IUpdateUserInput, IUpdateUserRole } from './interface';
+import {
+  IFindUsersQuery,
+  IFindUsersResult,
+  IFindUserDetail,
+  ICreateUserInput,
+  IActivateUser,
+  IUpdateUserInput,
+  IUpdateUserRole,
+} from './interface';
 import config from '../../../../configs';
 import redempHistoryRepository from '../../quizzes/redemption-history/repository';
-import { ICreateRedemptionHistoryInput, IFindRempHistoryDetail, ICancelRedeemPoints, IFindRempHistoryQuery, IFindRempHistoryResult } from '../../quizzes/redemption-history/interface';
+import {
+  ICreateRedemptionHistoryInput,
+  IFindRempHistoryDetail,
+  ICancelRedeemPoints,
+  IFindRempHistoryQuery,
+  IFindRempHistoryResult,
+} from '../../quizzes/redemption-history/interface';
 import { addModificationAuditInfo, validatePagination } from '../../../core/helpers';
 
 const addFullName = (user: ICreateUserInput) => {
-  const normalizedFullName = [user.firstName, user.lastName]
-    .join(' ')
-    .toLocaleLowerCase();
+  const normalizedFullName = [user.firstName, user.lastName].join(' ').toLocaleLowerCase();
 
   const fullName = [user.firstName, user.lastName].join(' ');
 
@@ -41,8 +53,12 @@ const findUserById = async (userId: string): Promise<IFindUserDetail> => {
 const createUser = async (body: ICreateUserInput): Promise<IFindUserDetail> => {
   // Validate Body
   const validationRule = Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().regex(config.usersModuleConfig.passwordRegex).required(),
+    email: Joi.string()
+      .email()
+      .required(),
+    password: Joi.string()
+      .regex(config.usersModuleConfig.passwordRegex)
+      .required(),
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     phoneNumber: Joi.string().required(),
@@ -161,7 +177,9 @@ const updateUserRoles = async (params: IUpdateUserRole): Promise<void> => {
   await usersRepository.updateUserRoles(params);
 };
 
-const redeemPoints = async (params: ICreateRedemptionHistoryInput): Promise<IFindRempHistoryDetail> => {
+const redeemPoints = async (
+  params: ICreateRedemptionHistoryInput
+): Promise<IFindRempHistoryDetail> => {
   if (!params.userId) {
     throw new Error('User ID Is Empty');
   }
@@ -180,7 +198,12 @@ const redeemPoints = async (params: ICreateRedemptionHistoryInput): Promise<IFin
   if (userScore.rewardPoint < params.points) {
     throw new Error('Not Enough Point');
   }
-  await usersRepository.updateUserRewardPoint((addModificationAuditInfo({ email: userScore.email }, { id: params.userId, points: -(Math.abs(params.points)) })));
+  await usersRepository.updateUserRewardPoint(
+    addModificationAuditInfo(
+      { email: userScore.email },
+      { id: params.userId, points: -Math.abs(params.points) }
+    )
+  );
   params.isActive = true;
   return await redempHistoryRepository.createRedemptionHistory(params);
 };
@@ -194,7 +217,12 @@ const cancelRedeemPoints = async (params: ICancelRedeemPoints): Promise<void> =>
   }
   const userCancelRedeem = await usersRepository.findUserScoreById(params.userId);
   const deletedRedem = await redempHistoryRepository.cancelRedeemPoints(params);
-  await usersRepository.updateUserRewardPoint((addModificationAuditInfo({ email: userCancelRedeem.email }, { id: params.userId, points: deletedRedem.points })));
+  await usersRepository.updateUserRewardPoint(
+    addModificationAuditInfo(
+      { email: userCancelRedeem.email },
+      { id: params.userId, points: deletedRedem.points }
+    )
+  );
 };
 
 const getRedeemPoints = async (params: IFindRempHistoryQuery): Promise<IFindRempHistoryResult> => {

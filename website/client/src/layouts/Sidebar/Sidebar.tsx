@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Menu, Icon } from 'antd';
-import Logo from '../Logo/Logo';
+// import Logo from '../Logo/Logo';
 // import SmallLogo from '../SmallLogo/SmallLogo';
 import './Sidebar.less';
 // import { MainPageState, openKeyChange } from '../../redux/ui/main-page';
@@ -32,6 +32,18 @@ class Sidebar extends React.Component<SidebarProps, any> {
     if (
       true // checkOnePermission(submenu.permissions, this.props.profile.permissions)
     ) {
+      if (!submenu.isExpandable) {
+        return (
+          <Menu.Item key={`${submenu.key}`} className="submenu-item">
+            <Link href={submenu.path}>
+              <span>
+                <Icon type={submenu.icon} />
+                <span>{submenu.title}</span>
+              </span>
+            </Link>
+          </Menu.Item>
+        );
+      }
       return (
         <Menu.SubMenu
           key={submenu.key}
@@ -75,7 +87,6 @@ class Sidebar extends React.Component<SidebarProps, any> {
     return (
       <div className="sidebar-menu">
         {/* {this.props.isSidebarCollapsed ? <SmallLogo /> : <Logo />} */}
-        <Logo />
         <Menu
           key="Menu"
           theme="dark"

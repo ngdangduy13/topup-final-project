@@ -10,7 +10,7 @@ const Logo = (_props: LogoProps) => {
       {/* <Link to='/main'>
         <img src={'../../../../static/images/techkids.png'} alt='Logo' />
       </Link> */}
-      <img src={'../../../../static/images/techkids.png'} alt='Logo' />
+      {/* <img src={'../../../../static/images/techkids.png'} alt='Logo' /> */}
     </div>
   );
 };
