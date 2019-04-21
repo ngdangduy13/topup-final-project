@@ -8,9 +8,8 @@ const uploadRouter = express.Router();
 uploadRouter.post('/', (req, res) => {
     try {
         let file = (req.files as any).file;
-        const filename = req.body.filename;
 
-        let pathFile = `../../../static/temps/images/${filename}`;
+        let pathFile = `../../../static/temps/images/${file.name}`;
         const fileFolder = path.join(__dirname, pathFile);
 
         file.mv(fileFolder, (err: any) => {
@@ -18,7 +17,7 @@ uploadRouter.post('/', (req, res) => {
                 res.status(500).send(err);
             }
 
-            res.json({ file: `static/temps/images/${filename}` });
+            res.json({ file: `static/temps/images/${file.name}` });
         });
     } catch (error) {
         logger.error(`${error.message} ${error.stack}`);

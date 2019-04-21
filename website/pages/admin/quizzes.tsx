@@ -7,6 +7,9 @@ import { initStore, models } from '../../rematch/store';
 import AdminLayout from '../../client/src/layouts';
 import { QuizzPageState } from '../../rematch/store/models/ui/quizz-page/state';
 import QuizzList from './quizz/quizz-list';
+import AddQuizz from './quizz/add-quizz';
+import { Row, Col, Button, Icon } from 'antd';
+
 // import './quizz/quizzes.less';
 
 
@@ -15,20 +18,58 @@ export interface UserPageProps {
   quizzPageModels: QuizzPageState;
 }
 
-class QuizzPage extends React.Component<UserPageProps> {
+class QuizzPage extends React.Component<UserPageProps, any> {
   constructor(props: Readonly<UserPageProps>) {
     super(props);
+    this.state = {
+      isVisible: false
+    }
   }
 
   componentDidMount() {
     this.props.fetchListQuizz({});
   }
 
+  toggleAddQuizz = () => {
+    this.setState({
+      isVisible: !this.state.isVisible,
+    });
+  };
+
+
   render(): JSX.Element {
     return (
       <AdminLayout>
         <div className={'quizz-list-page'}>
-          <QuizzList {...this.props} />
+
+          {this.state.isVisible
+            ? <AddQuizz {...this.props} toggleAddQuizz={this.toggleAddQuizz} />
+            : <div>
+              <Row>
+                <Col span={24} className="button-flex">
+                  <div className="add">
+                    <Button
+                      type="primary"
+                      onClick={this.toggleAddQuizz}
+                    >
+                      <Icon type="plus" /> Add New Quiz
+              </Button>
+                  </div>
+                  <div className="refresh">
+                    <Button
+                      type="primary"
+                      onClick={() => this.props.fetchListQuizz({})}
+                      loading={this.props.quizzPageModels.isBusy}
+                      icon="sync"
+                    >
+                      Refresh
+              </Button>
+                  </div>
+                </Col>
+              </Row>
+              <QuizzList {...this.props} />
+            </div>
+          }
         </div>
       </AdminLayout>
     );

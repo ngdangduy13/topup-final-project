@@ -56,7 +56,7 @@ class DetailQuizzPage extends React.Component<UserPageProps> {
         <div className={'quizz-list-page'}>
           {currentQuiz.questions.map((item: Question, index: number) => (
             <div>
-              <Row className="questionContainer">
+              <Row className="questionContainer" gutter={16}>
                 <Col xs={13} sm={15} lg={17}>
                   <p><strong>Question {index + 1}:</strong> {item.description}</p>
                   <List
@@ -67,25 +67,17 @@ class DetailQuizzPage extends React.Component<UserPageProps> {
                         <Card
                           size="small"
                         >
-
                           <Row align="middle" justify="center">
-                            <Col xs={4} sm={4} lg={4}>
-                              <Icon type={item.isCorrect ? 'check' : 'close'} style={{ color: item.isCorrect ? '#52c41a' : 'red', fontSize: 18 }} />
-
-                            </Col>
-                            <Col xs={18} sm={18} lg={18} >
+                            <div style={{ display: 'flex' }}>
+                              <Icon type={item.isCorrect ? 'check' : 'close'} style={{ color: item.isCorrect ? '#52c41a' : 'red', fontSize: 18, marginRight: 8 }} />
                               <span>{item.description}</span>
-                            </Col>
+                            </div>
                           </Row>
-
                         </Card>
-
-
                       </List.Item>
                     )}
                   />,
                 </Col>
-                <Col xs={1} sm={1} lg={1} />
                 <Col xs={10} sm={8} lg={6}>
                   <img src={item.coverUrl} className="coverImage" />
                 </Col>
