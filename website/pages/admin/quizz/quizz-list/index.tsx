@@ -7,6 +7,8 @@ import moment from 'moment';
 import Router from 'next/router';
 export interface QuizzListProps {
   quizzPageModels: QuizzPageState;
+  fetchListQuizz: (payload: any) => void;
+
 }
 
 class QuizzList extends React.Component<QuizzListProps, any> {

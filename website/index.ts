@@ -4,6 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as cors from 'cors';
+import * as fileUpload from 'express-fileupload';
 import { bootstrapNextjs } from './nextjs/bootstrapNextjs';
 import apiRouter from './api';
 import config from './configs';
@@ -29,7 +30,9 @@ const bootstrap = async () => {
 
     server.use(bodyParser.json({ limit: '50mb' }));
     server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-
+    server.use(fileUpload({
+        createParentPath: true
+    }));
     server.use(cookieParser());
     server.use(
         session({

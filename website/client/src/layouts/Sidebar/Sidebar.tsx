@@ -8,9 +8,9 @@ import './Sidebar.less';
 // import { AppState } from '../../redux';
 // import { connect } from 'react-redux';
 // import { Dispatch } from 'redux';
-import Link from 'next/link';
 
 import sidebarMenu from '../../constants/sidebar.constant';
+import Router from 'next/router';
 // import { checkOnePermission, checkAllPermissions } from '../../helpers';
 // import { I18nextProviderProps } from 'react-i18next/src/I18nextProvider';
 // import { TranslationFunction, translate } from 'react-i18next';
@@ -24,8 +24,9 @@ interface SidebarProps {
 }
 
 class Sidebar extends React.Component<SidebarProps, any> {
-  handleOpenChange = (_openKeys: string[]) => {
+  handleOpenChange = (openKeys: string[]) => {
     // this.props.dispatch(openKeyChange(openKeys));
+    console.log(openKeys)
   };
 
   renderSubmenu = (submenu: any) => {
@@ -35,12 +36,10 @@ class Sidebar extends React.Component<SidebarProps, any> {
       if (!submenu.isExpandable) {
         return (
           <Menu.Item key={`${submenu.key}`} className="submenu-item">
-            <Link href={submenu.path}>
-              <span>
-                <Icon type={submenu.icon} />
-                <span>{submenu.title}</span>
-              </span>
-            </Link>
+            <span>
+              <Icon type={submenu.icon} />
+              <span>{submenu.title}</span>
+            </span>
           </Menu.Item>
         );
       }
@@ -69,15 +68,17 @@ class Sidebar extends React.Component<SidebarProps, any> {
     ) {
       return (
         <Menu.Item key={`${menuitem.key}`}>
-          <Link href={menuitem.path}>
-            <span>{menuitem.title}</span>
-          </Link>
+          <span>{menuitem.title}</span>
         </Menu.Item>
       );
     } else {
       return;
     }
   };
+  handleClick = (e: any) => {
+    console.log('click ', e);
+    Router.push(e.key);
+  }
 
   render(): JSX.Element {
     // const openKeys = this.props.isSidebarCollapsed
@@ -88,6 +89,7 @@ class Sidebar extends React.Component<SidebarProps, any> {
       <div className="sidebar-menu">
         {/* {this.props.isSidebarCollapsed ? <SmallLogo /> : <Logo />} */}
         <Menu
+          onClick={this.handleClick}
           key="Menu"
           theme="dark"
           mode="inline"
