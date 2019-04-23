@@ -92,7 +92,7 @@ class UserProfile extends React.Component<UserProfileProps, any> {
                                 Username
                     </Col>
                             <Col span={12}>
-                                <Input className={'input'} disabled={true} value={(this.props.userPage.currentUser as any).username} />
+                                <Input className={'input'} disabled={false} value={(this.props.userPage.currentUser as any).username} />
                             </Col>
                             <Col span={8} />
                         </Row>
@@ -101,7 +101,7 @@ class UserProfile extends React.Component<UserProfileProps, any> {
                                 Email
                     </Col>
                             <Col span={12}>
-                                <Input className={'input'} disabled={true} value={(this.props.userPage.currentUser as any).email} />
+                                <Input className={'input'} disabled={false} value={(this.props.userPage.currentUser as any).email} />
                             </Col>
                             <Col span={8} />
                         </Row>

@@ -18,9 +18,8 @@ export default class LumiledsApp extends App {
         return (
             <Container>
                 <Head>
-                    <title>Techkids</title>
+                    <title>QuizLedge</title>
                     {/* <link href='https://www.lumileds.com/icon-normal.png' rel='icon' sizes='128x128' /> */}
-                    <link href='../static/images/small-logo.png' rel='icon' sizes='128x128' />
                 </Head>
                 <Component {...pageProps} />
             </Container>

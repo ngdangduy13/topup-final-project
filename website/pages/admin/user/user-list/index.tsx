@@ -15,7 +15,6 @@ export interface UserListProps {
   setPageOrientation: (payload: any) => void;
   setFirstPageCheck: (payload: any) => void;
   createUserEffect: (payload: any) => void;
-
 }
 
 class UserList extends React.Component<UserListProps, any> {
@@ -54,15 +53,26 @@ class UserList extends React.Component<UserListProps, any> {
         align: 'center' as 'center',
         width: '7%',
         render: (item: IFindUserDetail) => (
-          <span style={{ cursor: 'pointer' }}>
-            <Tooltip title="Edit">
-              <Icon
-                onClick={() => this._renderUserProfile(item)}
-                style={{ color: '#3FA9FF' }}
-                type="form"
-              />
-            </Tooltip>
-          </span>
+          <div>
+            <span style={{ cursor: 'pointer' }}>
+              <Tooltip title="Deactive">
+                <Icon
+                  onClick={() => this._renderUserProfile(item)}
+                  style={{ color: 'red', paddingRight: 8 }}
+                  type="lock"
+                />
+              </Tooltip>
+            </span>
+            <span style={{ cursor: 'pointer' }}>
+              <Tooltip title="Edit">
+                <Icon
+                  onClick={() => this._renderUserProfile(item)}
+                  style={{ color: '#3FA9FF' }}
+                  type="form"
+                />
+              </Tooltip>
+            </span>
+          </div>
         ),
       },
       {
@@ -135,7 +145,7 @@ class UserList extends React.Component<UserListProps, any> {
   render(): JSX.Element {
     return (
       <div>
-        <AddUser {...this.props}/>
+        <AddUser {...this.props} />
         <Table
           loading={this.props.userPage.isBusy}
           dataSource={this.props.userPage.listUser.data}

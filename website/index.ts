@@ -10,7 +10,7 @@ import config from './configs';
 import logger from './api/core/logger/log4js';
 
 const bootstrap = async () => {
-    const port = parseInt(process.env.PORT ? process.env.PORT : '', 10) || 3000;
+    const port = parseInt(process.env.PORT ? process.env.PORT : '', 10) || 3003;
     const server = express();
 
     // Connect To MongoDB

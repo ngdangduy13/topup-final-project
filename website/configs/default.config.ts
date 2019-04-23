@@ -16,8 +16,8 @@ const defaultConfig = {
     mongoConnectionToken: 'mongoConnectionToken',
   },
   nextjs: {
-    apiUrl: 'http://localhost:3000/api',
-    hostUrl: 'http://localhost:3000/',
+    apiUrl: 'http://localhost:3003/api',
+    hostUrl: 'http://localhost:3003/',
     cookieDomain: 'localhost',
     corsOrigin: /.*\.localhost:3000$/,
   },
@@ -53,11 +53,9 @@ const defaultConfig = {
     token_uri: 'https://www.googleapis.com/oauth2/v4/token',
     auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
     client_secret: 'qythRm_Qyov0OQZ6wo0Aejr4',
-    redirect_uris: [
-      'urn:ietf:wg:oauth:2.0:oob',
-      'http://localhost',
-    ],
-    access_token: 'ya29.GltrBtDj6uBxOQKFsQ68jMesS3nr-wmqF1SI1gVDEs1Xfj_76kXF6-jucMWveyTIH1uxcv1zQZyc-MhMtItW3b0weeB9KacyTQNClxLfsZJAxvofxnYoPm_2N7YL',
+    redirect_uris: ['urn:ietf:wg:oauth:2.0:oob', 'http://localhost'],
+    access_token:
+      'ya29.GltrBtDj6uBxOQKFsQ68jMesS3nr-wmqF1SI1gVDEs1Xfj_76kXF6-jucMWveyTIH1uxcv1zQZyc-MhMtItW3b0weeB9KacyTQNClxLfsZJAxvofxnYoPm_2N7YL',
     scope: 'https://mail.google.com/',
     token_type: 'Bearer',
     expires_in: 3600,
