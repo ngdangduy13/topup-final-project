@@ -9,9 +9,9 @@ import { QuizzPageState } from '../../rematch/store/models/ui/quizz-page/state';
 import QuizzList from './quizz/quizz-list';
 import AddQuizz from './quizz/add-quizz';
 import { Row, Col, Button, Icon } from 'antd';
+import QuizzFilter from './quizz/quizz-filter';
 
 // import './quizz/quizzes.less';
-
 
 export interface UserPageProps {
   fetchListQuizz: (payload: any) => void;
@@ -22,8 +22,8 @@ class QuizzPage extends React.Component<UserPageProps, any> {
   constructor(props: Readonly<UserPageProps>) {
     super(props);
     this.state = {
-      isVisible: false
-    }
+      isVisible: false,
+    };
   }
 
   componentDidMount() {
@@ -36,40 +36,43 @@ class QuizzPage extends React.Component<UserPageProps, any> {
     });
   };
 
+  renderQuizList() {
+    return (
+      <div>
+        <QuizzFilter {...this.props} />
+        <Row>
+          <Col span={24} className="button-flex">
+            <div className="add">
+              <Button type="primary" onClick={this.toggleAddQuizz}>
+                <Icon type="plus" /> Add New Quiz
+              </Button>
+            </div>
+            <div className="refresh">
+              <Button
+                type="primary"
+                onClick={() => this.props.fetchListQuizz({})}
+                loading={this.props.quizzPageModels.isBusy}
+                icon="sync"
+              >
+                Refresh
+              </Button>
+            </div>
+          </Col>
+        </Row>
+        <QuizzList {...this.props} />
+      </div>
+    );
+  }
 
   render(): JSX.Element {
     return (
       <AdminLayout>
         <div className={'quizz-list-page'}>
-
-          {this.state.isVisible
-            ? <AddQuizz {...this.props} toggleAddQuizz={this.toggleAddQuizz} />
-            : <div>
-              <Row>
-                <Col span={24} className="button-flex">
-                  <div className="add">
-                    <Button
-                      type="primary"
-                      onClick={this.toggleAddQuizz}
-                    >
-                      <Icon type="plus" /> Add New Quiz
-              </Button>
-                  </div>
-                  <div className="refresh">
-                    <Button
-                      type="primary"
-                      onClick={() => this.props.fetchListQuizz({})}
-                      loading={this.props.quizzPageModels.isBusy}
-                      icon="sync"
-                    >
-                      Refresh
-              </Button>
-                  </div>
-                </Col>
-              </Row>
-              <QuizzList {...this.props} />
-            </div>
-          }
+          {this.state.isVisible ? (
+            <AddQuizz {...this.props} toggleAddQuizz={this.toggleAddQuizz} />
+          ) : (
+            this.renderQuizList()
+          )}
         </div>
       </AdminLayout>
     );

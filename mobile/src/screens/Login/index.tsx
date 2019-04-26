@@ -50,10 +50,10 @@ class Test1 extends React.Component<Props, State> {
         return (
             <BasicLayout blackStatusBar>
                 <View style={{ paddingHorizontal: '15%', paddingVertical: '10%', flex: 1, backgroundColor: '#fff' }}>
-                    <Image
+                    {/* <Image
                         source={require('../../../assets/images/logo.png')}
                         style={{ alignSelf: 'center', marginVertical: '10%', height: 80, width: 200 }}
-                        resizeMode="contain" />
+                        resizeMode="contain" /> */}
                     <KeyboardAvoidingView style={{ paddingVertical: 8 }}>
                         <Formik
                             initialValues={{ email: '', password: '' }}

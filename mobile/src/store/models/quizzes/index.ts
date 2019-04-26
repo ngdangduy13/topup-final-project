@@ -454,7 +454,6 @@ const navigation = createModel({
                 const data = result.data.map((item: any, index: number) => {
                     return {
                         ...item,
-                        coverImageUrl: `${config().hostUrl}${config().imageUrl}${item.coverImageUrl}`
                     };
                 });
                 if (data.length === 51) {
@@ -539,7 +538,6 @@ const navigation = createModel({
                 const data = result.data.map((item: any, index: number) => {
                     return {
                         ...item,
-                        coverImageUrl: `${config().hostUrl}${config().imageUrl}${item.coverImageUrl}`
                     };
                 });
                 if (data.length === 51) {
@@ -648,7 +646,6 @@ const navigation = createModel({
                         major: result.beacon.major,
                         minor: result.beacon.minor,
                         _id: result._id,
-                        coverImageUrl: `${config().hostUrl}${config().imageUrl}${result.coverImageUrl}`
                     });
                     const questionChecklist: QuestionChecklist = {
                         isHavingCoverUrl: result.questions.map((item: any) => item.coverUrl === '' ? false : true),
@@ -658,7 +655,6 @@ const navigation = createModel({
                 } else {
                     const data = {
                         ...result,
-                        coverImageUrl: `${config().hostUrl}${config().imageUrl}${result.coverImageUrl}`
                     };
                     this.updateQuizIsPlaying(data);
                 }
@@ -780,3 +776,4 @@ const navigation = createModel({
 });
 
 export default navigation;
+

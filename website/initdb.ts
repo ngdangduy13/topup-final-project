@@ -126,12 +126,7 @@ mongoose.connect(`${config.database.mongoConnectionString}`, {
       title: `Santa Claus: How much do you know about him?${++i}`,
       description: 'Jovial, generous, legendary, white-breaded - it\'s all about him, Santa Claus! How much exactly do you know about Santa? Test your knowledge in this #Christmas quiz. Ho-ho-ho!',
       state: 'PUBLISHED',
-      beacon: {
-        isActive: false,
-        uuid: '',
-        major: '',
-        minor: '',
-      },
+
       questions: [
         {
           answers: [

@@ -137,11 +137,7 @@ const loginLocal = async (body: ILoginInput): Promise<string> => {
   if (!bcrypt.compareSync(body.password, existedUser.password) && isEmail) {
     throw new Error(`Email Or Password Is Incorrect`);
   }
-
-  // if ((!existedUser.roles || existedUser.roles.indexOf(config.roles.admin) === -1)) {
-  //   throw new Error('Unauthorized');
-  // }
-
+  
   return await createToken(existedUser, body.rememberMe, body.isMobile);
 };
 

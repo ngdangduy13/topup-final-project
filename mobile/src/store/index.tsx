@@ -10,7 +10,6 @@ import { persistStore } from 'redux-persist';
 let store: Store<AppState>;
 
 const configStore = (callback?: () => void) => {
-
   const persistPlugin = createRematchPersist({
     whitelist: ['userProfile', 'language'],
     key: 'root',

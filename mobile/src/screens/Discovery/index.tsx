@@ -208,7 +208,7 @@ class DatePicker extends React.Component<Props, State> {
                 <View>
                     <FastImage source={item.coverImageUrl === ''
                         ? require('../../../assets/images/background.jpg')
-                        : { uri: item.coverImageUrl }} style={styles.Image} borderRadius={2} />
+                        : { uri: `http://localhost:3003${item.coverImageUrl}` }} style={styles.Image} borderRadius={2} />
                     <View style={styles.CountContainer}>
                         <TextMontserrat style={{ color: '#fff', fontFamily: 'Montserrat-ExtraBold', fontSize: 12 }}>
                             {item.questionCount} Questions

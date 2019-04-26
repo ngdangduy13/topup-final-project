@@ -23,13 +23,11 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
     };
   }
 
-
   toggleAddQuestion = () => {
     this.setState({
       isVisibleModalQuestion: !this.state.isVisibleModalQuestion,
     });
   };
-
 
   // addUser = (e: any) => {
   //   e.preventDefault();
@@ -54,32 +52,33 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
     body.append('filename', file.name);
     body.append('Content-Type', file.type);
     const result: any = await fetch('http://localhost:3003/api/uploadImage', {
-      method: 'POST', headers: {
+      method: 'POST',
+      headers: {
         'Content-Type': 'multipart/form-data',
       },
-      body
+      body,
     });
-    console.log(result)
-  }
+    console.log(result);
+  };
 
-  handleCancel = () => this.setState({ previewVisible: false })
+  handleCancel = () => this.setState({ previewVisible: false });
 
   handlePreview = (file: any) => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
     });
-  }
+  };
 
   handleChange = (info: any) => {
-    console.log(info)
+    console.log(info);
     let fileList = info.fileList;
 
     // 1. Limit the number of uploaded files
     // Only to show two recent uploaded files, and old ones will be replaced by the new
     fileList = fileList.slice(-1);
-    this.setState({ fileList })
-  }
+    this.setState({ fileList });
+  };
 
   render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
@@ -90,49 +89,32 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const questions = [{
-      coverUrl: '/static/temps/images/santa.jpg',
-      description: 'It was ___ settlers who brought the Santa Claus tradition to America',
-      answers: [{
-        isCorrect: true,
-        description: 'Bristish'
-      },
+    const questions = [
       {
-        isCorrect: false,
-        description: 'Bristish'
+        coverUrl: '/static/temps/images/santa.jpg',
+        description: 'It was ___ settlers who brought the Santa Claus tradition to America',
+        answers: [
+          {
+            isCorrect: true,
+            description: 'Bristish',
+          },
+          {
+            isCorrect: false,
+            description: 'Bristish',
+          },
+          {
+            isCorrect: false,
+            description: 'Bristish',
+          },
+          {
+            isCorrect: false,
+            description: 'Bristish',
+          },
+        ],
       },
-      {
-        isCorrect: false,
-        description: 'Bristish'
-      },
-      {
-        isCorrect: false,
-        description: 'Bristish'
-      }]
-    },
-    {
-      coverUrl: '/static/temps/images/santa.jpg',
-      description: 'It was ___ settlers who brought the Santa Claus tradition to America',
-      answers: [{
-        isCorrect: true,
-        description: 'Bristish'
-      },
-      {
-        isCorrect: false,
-        description: 'Bristish'
-      },
-      {
-        isCorrect: false,
-        description: 'Bristish'
-      },
-      {
-        isCorrect: false,
-        description: 'Bristish'
-      }]
-    }]
+    ];
     return (
       <div>
-
         <Form>
           <Divider>Quiz</Divider>
           <Row gutter={24} align="bottom" justify="center">
@@ -145,13 +127,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
                       message: 'Please fill the title before submitting',
                     },
                   ],
-                })(
-                  <Input
-                    name="title"
-                    prefix={<Icon type="mail" />}
-                    placeholder="Title"
-                  />
-                )}
+                })(<Input name="title" prefix={<Icon type="mail" />} placeholder="Title" />)}
               </Form.Item>
               <Form.Item label="Description" hasFeedback>
                 {getFieldDecorator('description', {
@@ -182,7 +158,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
                 })(
                   <div className="clearfix">
                     <Upload
-                      action='/api/uploadImage'
+                      action="/api/uploadImage"
                       listType="picture-card"
                       fileList={fileList}
                       onPreview={this.handlePreview}
@@ -191,7 +167,11 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
                       {fileList.length === 1 ? null : uploadButton}
                     </Upload>
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                      <img alt="example" style={{ width: '100%', height: 'auto' }} src={previewImage} />
+                      <img
+                        alt="example"
+                        style={{ width: '100%', height: 'auto' }}
+                        src={previewImage}
+                      />
                     </Modal>
                   </div>
                 )}
@@ -200,21 +180,28 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
           </Row>
           <Divider>Questions</Divider>
           {questions.map((item: any, index: number) => (
-            <div className="questionContainer" key={`question${index}`} >
+            <div className="questionContainer" key={`question${index}`}>
               <Row gutter={16}>
                 <Col xs={14} sm={16} lg={18}>
-                  <p><strong>Question {index + 1}:</strong> {item.description}</p>
+                  <p>
+                    <strong>Question {index + 1}:</strong> {item.description}
+                  </p>
                   <List
                     grid={{ gutter: 16, column: 4 }}
                     dataSource={item.answers}
                     renderItem={(item: any, index: number) => (
                       <List.Item key={`answer${index}`}>
-                        <Card
-                          size="small"
-                        >
+                        <Card size="small">
                           <Row align="middle" justify="center">
                             <div style={{ display: 'flex' }}>
-                              <Icon type={item.isCorrect ? 'check' : 'close'} style={{ color: item.isCorrect ? '#52c41a' : 'red', fontSize: 18, marginRight: 8 }} />
+                              <Icon
+                                type={item.isCorrect ? 'check' : 'close'}
+                                style={{
+                                  color: item.isCorrect ? '#52c41a' : 'red',
+                                  fontSize: 18,
+                                  marginRight: 8,
+                                }}
+                              />
                               <span>{item.description}</span>
                             </div>
                           </Row>
@@ -232,7 +219,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
             </div>
           ))}
           <Row>
-            <div className="add-container" onClick={this.toggleAddQuestion} >
+            <div className="add-container" onClick={this.toggleAddQuestion}>
               <Icon type="plus-circle" theme="filled" style={{ fontSize: 40, color: '#1374ce' }} />
               <div className="add-text">Add question</div>
             </div>
@@ -244,7 +231,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
               padding: '10px 16px',
               background: '#fff',
               textAlign: 'right',
-              marginTop: 12
+              marginTop: 12,
             }}
           >
             <Button onClick={this.props.toggleAddQuizz} style={{ marginRight: 8 }}>

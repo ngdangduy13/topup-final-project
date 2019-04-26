@@ -98,6 +98,11 @@ class FooterApp extends React.Component<Props, State> {
                     routeName: ScreenNames.Scoreboard,
                     icon: 'ios-podium',
                     text: 'Scoreboard'
+                },
+                {
+                    routeName: ScreenNames.Scoreboard,
+                    icon: 'ios-gift',
+                    text: 'Voucher'
                 }
             ]
             : [
@@ -110,6 +115,11 @@ class FooterApp extends React.Component<Props, State> {
                     routeName: ScreenNames.Scoreboard,
                     icon: 'ios-podium',
                     text: 'Scoreboard'
+                },
+                {
+                    routeName: ScreenNames.Scoreboard,
+                    icon: 'ios-gift',
+                    text: 'Voucher'
                 }
             ];
         return (

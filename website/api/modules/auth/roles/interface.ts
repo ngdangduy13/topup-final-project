@@ -45,3 +45,4 @@ export interface IActivateRole extends HasModificationAuditInfo {
 }
 
 export interface IGetAllRolesResult extends PageableResult<string> {}
+ 

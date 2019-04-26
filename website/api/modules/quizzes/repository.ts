@@ -37,7 +37,7 @@ const findQuizzes = async (query: IFindQuizzQuery): Promise<IFindQuizzResult> =>
         const dataPromise = addQuery(query)
             .sort({ createdAt: query.pageOrientation ? -1 : 1 })
             .sort('_id')
-            .select('_id coverImageUrl title createdAt questionCount state beacon')
+            .select('_id coverImageUrl title createdAt questionCount state')
             .limit(Number(query.pageSize) + 1)
             .exec();
 

@@ -145,7 +145,8 @@ class AddUser extends React.Component<AddUserProps, any> {
                     },
                     {
                       pattern: config.usersModuleConfig.passwordRegex,
-                      message: 'Password must include at least 1 capitalized letter, 1 special letter and minimum 8 characters',
+                      message:
+                        'Password must include at least 1 capitalized letter, 1 special letter and minimum 8 characters',
                     },
                   ],
                 })(
