@@ -2,7 +2,6 @@
 import { createModel } from '@rematch/core';
 import { ScoreboardState, ScoreboardItem } from './interface';
 import serviceProvider from '../../../services/service.provider';
-import { resolveTxt } from 'dns';
 import { AppState } from '../../state';
 
 const defaultState: ScoreboardState = {

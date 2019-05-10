@@ -1,6 +1,10 @@
 import * as express from 'express';
 import usersService from './service';
-import { addCreationAuditInfo, addModificationAuditInfo, validatePagination } from '../../../core/helpers';
+import {
+  addCreationAuditInfo,
+  addModificationAuditInfo,
+  validatePagination,
+} from '../../../core/helpers';
 import logger from '../../../core/logger/log4js';
 import config from '../../../../configs';
 import Authorize from '../../../../nextjs/middlewares/authorize';
@@ -13,7 +17,9 @@ usersRouter.get('/', Authorize([config.roles.admin]), async (req: any, res) => {
     res.status(200).send(results);
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
@@ -23,7 +29,9 @@ usersRouter.get('/:id', Authorize(), async (req: any, res) => {
     res.status(200).send(result);
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
@@ -33,7 +41,9 @@ usersRouter.post('/', Authorize([config.roles.admin]), async (req: any, res) => 
     res.status(200).send(newUser);
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
@@ -43,7 +53,9 @@ usersRouter.get('/verifyEmail/:userId', async (req: any, res) => {
     res.status(200).redirect('/auth/login');
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
@@ -52,11 +64,15 @@ usersRouter.put('/:id', Authorize(), async (req: any, res) => {
     if (req.body) {
       req.body._id = req.params.id;
     }
-    const newUser = await usersService.updateUser(addModificationAuditInfo(req.query.profile, req.body));
+    const newUser = await usersService.updateUser(
+      addModificationAuditInfo(req.query.profile, req.body)
+    );
     res.status(200).send(newUser);
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
@@ -66,19 +82,27 @@ usersRouter.put('/activateUser/:userId', Authorize([config.roles.admin]), async 
     res.status(200).end();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
-usersRouter.put('/deactivateUser/:userId', Authorize([config.roles.admin]), async (req: any, res) => {
-  try {
-    await usersService.deactivateUser(addModificationAuditInfo(req.query.profile, req.params));
-    res.status(200).end();
-  } catch (error) {
-    logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+usersRouter.put(
+  '/deactivateUser/:userId',
+  Authorize([config.roles.admin]),
+  async (req: any, res) => {
+    try {
+      await usersService.deactivateUser(addModificationAuditInfo(req.query.profile, req.params));
+      res.status(200).end();
+    } catch (error) {
+      logger.error(`${error.message} ${error.stack}`);
+      res
+        .status(error.status || 500)
+        .send({ message: error.message } || config.responseMessages.Internal);
+    }
   }
-});
+);
 
 usersRouter.post('/:id/updateroles', Authorize([config.roles.admin]), async (req: any, res) => {
   try {
@@ -87,41 +111,59 @@ usersRouter.post('/:id/updateroles', Authorize([config.roles.admin]), async (req
     res.status(200).end();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
-usersRouter.get('/:id/redeempoints', Authorize([config.roles.admin, config.roles.quizzMaster]), async (req: any, res) => {
+usersRouter.get(
+  '/:id/redeempoints',
+  Authorize([config.roles.admin, config.roles.quizzMaster]),
+  async (req: any, res) => {
+    try {
+      req.query.userId = req.params.id;
+      const result = await usersService.getRedeemPoints(req.query);
+      res.status(200).send(result);
+    } catch (error) {
+      logger.error(`${error.message} ${error.stack}`);
+      res
+        .status(error.status || 500)
+        .send({ message: error.message } || config.responseMessages.Internal);
+    }
+  }
+);
+
+usersRouter.post('/:id/redeempoints', Authorize(), async (req: any, res) => {
   try {
-    req.query.userId = req.params.id;
-    const result = await usersService.getRedeemPoints(req.query);
+    req.body.userId = req.params.id;
+    const result = await usersService.redeemPoints(
+      addCreationAuditInfo(req.query.profile, req.body)
+    );
     res.status(200).send(result);
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+    res
+      .status(error.status || 500)
+      .send({ message: error.message } || config.responseMessages.Internal);
   }
 });
 
-usersRouter.post('/:id/redeempoints', Authorize([config.roles.admin, config.roles.quizzMaster]), async (req: any, res) => {
-  try {
-    req.body.userId = req.params.id;
-    const result = await usersService.redeemPoints(addCreationAuditInfo(req.query.profile, req.body));
-    res.status(200).send(result);
-  } catch (error) {
-    logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
+usersRouter.post(
+  '/:id/cancelredeempoints',
+  Authorize([config.roles.admin, config.roles.quizzMaster]),
+  async (req: any, res) => {
+    try {
+      req.body.userId = req.params.id;
+      await usersService.cancelRedeemPoints(addModificationAuditInfo(req.query.profile, req.body));
+      res.status(200).end();
+    } catch (error) {
+      logger.error(`${error.message} ${error.stack}`);
+      res
+        .status(error.status || 500)
+        .send({ message: error.message } || config.responseMessages.Internal);
+    }
   }
-});
-
-usersRouter.post('/:id/cancelredeempoints', Authorize([config.roles.admin, config.roles.quizzMaster]), async (req: any, res) => {
-  try {
-    req.body.userId = req.params.id;
-    await usersService.cancelRedeemPoints(addModificationAuditInfo(req.query.profile, req.body));
-    res.status(200).end();
-  } catch (error) {
-    logger.error(`${error.message} ${error.stack}`);
-    res.status(error.status || 500).send({ message: error.message } || config.responseMessages.Internal);
-  }
-});
+);
 
 export default usersRouter;

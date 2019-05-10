@@ -60,9 +60,6 @@ export interface IFindQuizzResult extends PageableResult<IFindQuizzDetail[]> { }
 export interface IFindQuizzQuery extends PageableQuery, SortableQuery, HasActive {
     searchTerm?: string;
     state?: QuizzState;
-    uuid?: string;
-    major?: string;
-    minor?: string;
 }
 
 export interface ICreateQuizzInput extends HasCreationAuditInfo {
@@ -103,12 +100,6 @@ export interface IUpdateQuizzInput extends HasModificationAuditInfo {
     title: string;
     description: string;
     state: QuizzState;
-    beacon: {
-        isActive: boolean;
-        uuid: string;
-        major: number;
-        minor: number;
-    };
     questions: [{
         id: number;
         coverType: CoverType;
@@ -135,4 +126,5 @@ export interface ISubmitAnswersInput {
 export interface ISubmitAnswersResult {
     correctAnswerCount: number;
     points: number;
+    rewardPoints: number;
 }

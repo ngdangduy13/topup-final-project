@@ -61,11 +61,14 @@ class QuestDetail extends React.Component<QuestDetailProps, any> {
                     <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: 22, paddingVertical: '8%' }}>
                         Total score: {questionResult.points}
                     </Text>
+                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: 18, paddingBottom: '8%' }}>
+                        Reward points: {questionResult.rewardPoints}
+                    </Text>
                     <View style={{ flexDirection: 'row' }}>
-                        <Button
+                        {/* <Button
                             label="Scoreboard"
                             style={styles.Button}
-                            onPress={this.onGoScoreboard} />
+                            onPress={this.onGoScoreboard} /> */}
                         <Button
                             label="Home"
                             onPress={this.onGoHome}

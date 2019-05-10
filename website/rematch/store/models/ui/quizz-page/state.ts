@@ -3,6 +3,7 @@ import { IFindQuizzResult } from '../../../../../api/modules/quizzes/interface';
 export interface QuizzPageState {
   listQuizz: IFindQuizzResult;
   currentQuiz: SingleQuiz;
+  questionToCreate: Question[];
 
   quizzListPageIndex: string;
   quizzListPageOrientation: boolean;
@@ -29,7 +30,7 @@ export interface SingleQuiz {
 }
 
 export interface Question {
-  id: number;
+  id?: number;
   coverType: string;
   coverUrl: string;
   description: string;

@@ -1,22 +1,35 @@
 import UsersModel from './mongoose';
-import { IFindUsersQuery, IFindUsersResult, IFindUserDetail, ICreateUserInput, IActivateUser, IUpdateUserInput, IUser, IUpdateUserResetToken, IUpdateUserRole, IUpdateUserPoints } from './interface';
+import {
+  IFindUsersQuery,
+  IFindUsersResult,
+  IFindUserDetail,
+  ICreateUserInput,
+  IActivateUser,
+  IUpdateUserInput,
+  IUser,
+  IUpdateUserResetToken,
+  IUpdateUserRole,
+  IUpdateUserPoints,
+} from './interface';
 import logger from '../../../core/logger/log4js';
 
 const addQuery = (query: IFindUsersQuery): any => {
   return UsersModel.find({
     $and: [
-      query.searchTerm ? {
-        $or: [
-          { email: { $regex: `^${query.searchTerm}`, $options: 'i' } },
-          { username: { $regex: `^${query.searchTerm}`, $options: 'i' } },
-          { normalizedFullname: { $regex: `^${query.searchTerm}`, $options: 'i' } },
-        ],
-      } : {},
+      query.searchTerm
+        ? {
+            $or: [
+              { email: { $regex: `^${query.searchTerm}`, $options: 'i' } },
+              { username: { $regex: `^${query.searchTerm}`, $options: 'i' } },
+              { normalizedFullname: { $regex: `^${query.searchTerm}`, $options: 'i' } },
+            ],
+          }
+        : {},
       query.role ? { roles: query.role } : {},
       query.isActive !== undefined ? { isActive: query.isActive } : {},
       query.emailConfirmed !== undefined ? { emailConfirmed: query.emailConfirmed } : {},
-      query.pageIndex ?
-        { createdAt: query.pageOrientation ? { $lt: query.pageIndex } : { $gt: query.pageIndex } }
+      query.pageIndex
+        ? { createdAt: query.pageOrientation ? { $lt: query.pageIndex } : { $gt: query.pageIndex } }
         : {},
     ],
   });
@@ -34,7 +47,9 @@ const findUsers = async (query: IFindUsersQuery): Promise<IFindUsersResult> => {
     const dataPromise = addQuery(query)
       .sort({ createdAt: query.pageOrientation ? -1 : 1 })
       .limit(Number(query.pageSize) + 1)
-      .select(`_id username email profileImgUrl fullName i18n roles createdAt scorePoint rewardPoint`)
+      .select(
+        `_id username email profileImgUrl fullName i18n roles createdAt scorePoint rewardPoint`
+      )
       .exec();
 
     const [total, data] = await Promise.all([totalPromise, dataPromise]);
@@ -53,9 +68,11 @@ const findUsers = async (query: IFindUsersQuery): Promise<IFindUsersResult> => {
 
 const findUserById = async (userId: string): Promise<IFindUserDetail> => {
   try {
-    return await UsersModel.findOne({ _id: userId })
-      .select(`_id username email profileImgUrl fullName i18n roles createdAt scorePoint rewardPoint`)
-      .exec() as IFindUserDetail;
+    return (await UsersModel.findOne({ _id: userId })
+      .select(
+        `_id username email profileImgUrl fullName i18n roles createdAt scorePoint rewardPoint`
+      )
+      .exec()) as IFindUserDetail;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -64,9 +81,9 @@ const findUserById = async (userId: string): Promise<IFindUserDetail> => {
 
 const findUserScoreById = async (userId: string): Promise<IFindUserDetail> => {
   try {
-    return await UsersModel.findOne({ _id: userId })
+    return (await UsersModel.findOne({ _id: userId })
       .select(`rewardPoint email`)
-      .exec() as any;
+      .exec()) as any;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -75,9 +92,11 @@ const findUserScoreById = async (userId: string): Promise<IFindUserDetail> => {
 
 const findUserByUsername = async (username: string): Promise<IFindUserDetail> => {
   try {
-    return await UsersModel.findOne({ username: { $regex: `^${username}`, $options: 'i' } })
-      .select(`_id username email profileImgUrl fullName i18n roles createdAt scorePoint rewardPoint`)
-      .exec() as IFindUserDetail;
+    return (await UsersModel.findOne({ username: { $regex: `^${username}`, $options: 'i' } })
+      .select(
+        `_id username email profileImgUrl fullName i18n roles createdAt scorePoint rewardPoint`
+      )
+      .exec()) as IFindUserDetail;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -86,8 +105,9 @@ const findUserByUsername = async (username: string): Promise<IFindUserDetail> =>
 
 const findUserByEmail = async (email: string): Promise<IFindUserDetail> => {
   try {
-    return await UsersModel.findOne({ email: { $regex: `^${email}`, $options: 'i' } })
-      .exec() as IFindUserDetail;
+    return (await UsersModel.findOne({
+      email: { $regex: `^${email}`, $options: 'i' },
+    }).exec()) as IFindUserDetail;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -115,7 +135,7 @@ const verifyEmail = async (params: IActivateUser): Promise<void> => {
           lastModifiedAt: params.lastModifiedAt,
         },
       },
-      { new: true },
+      { new: true }
     ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
@@ -125,11 +145,7 @@ const verifyEmail = async (params: IActivateUser): Promise<void> => {
 
 const updateUser = async (body: IUpdateUserInput): Promise<void> => {
   try {
-    await UsersModel.findOneAndUpdate(
-      { _id: body._id },
-      { $set: body },
-      { new: true },
-    ).exec();
+    await UsersModel.findOneAndUpdate({ _id: body._id }, { $set: body }, { new: true }).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -148,7 +164,7 @@ const updateUserResetToken = async (body: IUpdateUserResetToken): Promise<void> 
           lastModifiedBy: body.lastModifiedBy,
         },
       },
-      { new: true },
+      { new: true }
     ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
@@ -160,8 +176,14 @@ const activateUser = async (params: IActivateUser): Promise<void> => {
   try {
     await UsersModel.findOneAndUpdate(
       { _id: params.userId },
-      { $set: { isActive: true, lastModifiedAt: params.lastModifiedAt, lastModifiedBy: params.lastModifiedBy } },
-      { new: true },
+      {
+        $set: {
+          isActive: true,
+          lastModifiedAt: params.lastModifiedAt,
+          lastModifiedBy: params.lastModifiedBy,
+        },
+      },
+      { new: true }
     ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
@@ -173,8 +195,14 @@ const deactivateUser = async (params: IActivateUser): Promise<void> => {
   try {
     await UsersModel.findOneAndUpdate(
       { _id: params.userId },
-      { $set: { isActive: false, lastModifiedAt: params.lastModifiedAt, lastModifiedBy: params.lastModifiedBy } },
-      { new: true },
+      {
+        $set: {
+          isActive: false,
+          lastModifiedAt: params.lastModifiedAt,
+          lastModifiedBy: params.lastModifiedBy,
+        },
+      },
+      { new: true }
     ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
@@ -184,8 +212,11 @@ const deactivateUser = async (params: IActivateUser): Promise<void> => {
 
 const findUserForLogin = async (usernameOrEmail: string, isEmail: boolean): Promise<IUser> => {
   try {
-    return await UsersModel.findOne(!isEmail ? { username: { $regex: `^${usernameOrEmail}`, $options: 'i' } } : { email: { $regex: `^${usernameOrEmail}`, $options: 'i' } })
-      .exec() as IUser;
+    return (await UsersModel.findOne(
+      !isEmail
+        ? { username: { $regex: `^${usernameOrEmail}`, $options: 'i' } }
+        : { email: { $regex: `^${usernameOrEmail}`, $options: 'i' } }
+    ).exec()) as IUser;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -194,8 +225,10 @@ const findUserForLogin = async (usernameOrEmail: string, isEmail: boolean): Prom
 
 const findUserByResetToken = async (token: string): Promise<IFindUserDetail> => {
   try {
-    return await UsersModel.findOne({ resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } })
-      .exec() as IFindUserDetail;
+    return (await UsersModel.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    }).exec()) as IFindUserDetail;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -212,9 +245,8 @@ const updateUserRoles = async (params: IUpdateUserRole): Promise<void> => {
           lastModifiedBy: params.lastModifiedBy,
           roles: params.roles,
         },
-      },
-    )
-      .exec();
+      }
+    ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -232,10 +264,10 @@ const updateUserScore = async (params: IUpdateUserPoints): Promise<void> => {
         },
         $inc: {
           scorePoint: params.points,
+          rewardPoint: params.rewardPoints,
         },
-      },
-    )
-      .exec();
+      }
+    ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -254,9 +286,8 @@ const updateUserRewardPoint = async (params: IUpdateUserPoints): Promise<void> =
         $inc: {
           rewardPoint: params.points,
         },
-      },
-    )
-      .exec();
+      }
+    ).exec();
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);
     throw new Error('Internal Server Error');
@@ -265,7 +296,9 @@ const updateUserRewardPoint = async (params: IUpdateUserPoints): Promise<void> =
 
 const findUserNameById = async (_id: string): Promise<string> => {
   try {
-    const result = await (UsersModel.findOne({ _id }, { _id: 0 }).select('username').exec() as any);
+    const result = await (UsersModel.findOne({ _id }, { _id: 0 })
+      .select('username')
+      .exec() as any);
     return result.username;
   } catch (error) {
     logger.error(`${error.message} ${error.stack}`);

@@ -6,7 +6,7 @@ export interface Props {
     style?: TextStyle;
 }
 export interface State { }
-class BasicLayout extends React.Component<any, State> {
+class TextMontserrat extends React.Component<any, State> {
     render(): React.ReactNode {
         return (
             <Text  {...this.props} style={{ fontFamily: 'Montserrat-Regular', ...this.props.style }}>{this.props.children}</Text>
@@ -14,4 +14,4 @@ class BasicLayout extends React.Component<any, State> {
     }
 }
 
-export default BasicLayout;
+export default TextMontserrat;

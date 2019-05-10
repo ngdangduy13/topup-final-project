@@ -12,7 +12,7 @@ const defaultConfig = {
     expiresIn_7days: 604800,
   },
   database: {
-    mongoConnectionString: 'mongodb://localhost:27017/lumileds',
+    mongoConnectionString: 'mongodb://localhost:27017/quizledge',
     mongoConnectionToken: 'mongoConnectionToken',
   },
   nextjs: {

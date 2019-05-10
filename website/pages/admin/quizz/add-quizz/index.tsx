@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Row, Col, Form, Input, Upload, Modal, Divider, List, Card, Button } from 'antd';
 import './add-quizz.less';
-import { QuizzPageState } from '../../../../rematch/store/models/ui/quizz-page/state';
+import { QuizzPageState, Question } from '../../../../rematch/store/models/ui/quizz-page/state';
 import { RcFile } from 'antd/lib/upload/interface';
 import ModalAddQuestion from '../modal-add-question';
 export interface AddQuizzProps {
@@ -9,6 +9,9 @@ export interface AddQuizzProps {
   form: any;
   fetchListQuizz: (payload: any) => void;
   toggleAddQuizz: () => void;
+  addQuestionToCreate: (payload: Question) => void;
+  createNewQuiz: (payload: any) => void;
+  resetQuestionToCreate: () => void;
 }
 
 class AddQuizz extends React.Component<AddQuizzProps, any> {
@@ -29,36 +32,37 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
     });
   };
 
-  // addUser = (e: any) => {
-  //   e.preventDefault();
-  //   this.props.form.validateFields(async (error: any, _values: any) => {
-  //     if (!error) {
-  //       const email = this.props.form.getFieldValue('email');
-  //       const password = this.props.form.getFieldValue('password');
-  //       const roles = this.props.form.getFieldValue('role');
-  //       const username = this.props.form.getFieldValue('username');
-  //       this.props.createUserEffect({ email, password, roles, username });
-  //       console.log(email);
-  //       console.log(roles);
-  //       this.props.form.resetFields();
-  //     }
-  //   });
-  // };
+  addQuiz = (e: any) => {
+    e.preventDefault();
+    this.props.form.validateFields(async (error: any, _values: any) => {
+      if (!error) {
+        const title = this.props.form.getFieldValue('titleQuiz');
+        const description = this.props.form.getFieldValue('descriptionQuiz');
+        this.props.createNewQuiz({
+          title,
+          description,
+          coverImageUrl: this.state.fileList[0].response.file,
+          state: 'PUBLISHED',
+        });
+        // this.props.form.resetFields();
+        // this.setState({ fileList: [], isVisible: false, previewVisible: false, previewImage: '' });
+        // this.props.resetQuestionToCreate();
+      }
+    });
+  };
 
   uploadFile = async (file: RcFile) => {
     const body = new FormData();
-    console.log(file);
     body.append('file', file);
     body.append('filename', file.name);
     body.append('Content-Type', file.type);
-    const result: any = await fetch('http://localhost:3003/api/uploadImage', {
+    await fetch('http://localhost:3003/api/uploadImage', {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
       body,
     });
-    console.log(result);
   };
 
   handleCancel = () => this.setState({ previewVisible: false });
@@ -71,7 +75,6 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
   };
 
   handleChange = (info: any) => {
-    console.log(info);
     let fileList = info.fileList;
 
     // 1. Limit the number of uploaded files
@@ -89,30 +92,6 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
         <div className="ant-upload-text">Upload</div>
       </div>
     );
-    const questions = [
-      {
-        coverUrl: '/static/temps/images/santa.jpg',
-        description: 'It was ___ settlers who brought the Santa Claus tradition to America',
-        answers: [
-          {
-            isCorrect: true,
-            description: 'Bristish',
-          },
-          {
-            isCorrect: false,
-            description: 'Bristish',
-          },
-          {
-            isCorrect: false,
-            description: 'Bristish',
-          },
-          {
-            isCorrect: false,
-            description: 'Bristish',
-          },
-        ],
-      },
-    ];
     return (
       <div>
         <Form>
@@ -120,7 +99,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
           <Row gutter={24} align="bottom" justify="center">
             <Col xs={12} sm={12} lg={12}>
               <Form.Item label="Title" hasFeedback>
-                {getFieldDecorator('title', {
+                {getFieldDecorator('titleQuiz', {
                   rules: [
                     {
                       required: true,
@@ -130,7 +109,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
                 })(<Input name="title" prefix={<Icon type="mail" />} placeholder="Title" />)}
               </Form.Item>
               <Form.Item label="Description" hasFeedback>
-                {getFieldDecorator('description', {
+                {getFieldDecorator('descriptionQuiz', {
                   rules: [
                     {
                       required: true,
@@ -148,11 +127,11 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
             </Col>
             <Col xs={12} sm={12} lg={12}>
               <Form.Item label="Cover Image">
-                {getFieldDecorator('coverImage', {
+                {getFieldDecorator('coverImageQuiz', {
                   rules: [
                     {
                       required: true,
-                      message: 'Please fill the description before submitting',
+                      message: 'Please upload cover image before submitting',
                     },
                   ],
                 })(
@@ -179,7 +158,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
             </Col>
           </Row>
           <Divider>Questions</Divider>
-          {questions.map((item: any, index: number) => (
+          {this.props.quizzPageModels.questionToCreate.map((item: Question, index: number) => (
             <div className="questionContainer" key={`question${index}`}>
               <Row gutter={16}>
                 <Col xs={14} sm={16} lg={18}>
@@ -212,7 +191,7 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
                 </Col>
                 <Col xs={10} sm={8} lg={6}>
                   <div className="imageContainer">
-                    <img src={item.coverUrl} className="coverImage" />
+                    <img src={`http://localhost:3003${item.coverUrl}`} className="coverImage" />
                   </div>
                 </Col>
               </Row>
@@ -237,12 +216,14 @@ class AddQuizz extends React.Component<AddQuizzProps, any> {
             <Button onClick={this.props.toggleAddQuizz} style={{ marginRight: 8 }}>
               Cancel
             </Button>
-            <Button onClick={this.props.toggleAddQuizz} type="primary">
+            <Button onClick={this.addQuiz} type="primary">
               Submit
             </Button>
           </div>
         </Form>
         <ModalAddQuestion
+          // {...this.props}
+          addQuestionToCreate={this.props.addQuestionToCreate}
           quizzPageModels={this.props.quizzPageModels}
           isVisible={this.state.isVisibleModalQuestion}
           toggleAddQuestion={this.toggleAddQuestion}

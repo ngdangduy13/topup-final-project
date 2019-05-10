@@ -100,7 +100,7 @@ class FooterApp extends React.Component<Props, State> {
                     text: 'Scoreboard'
                 },
                 {
-                    routeName: ScreenNames.Scoreboard,
+                    routeName: ScreenNames.Voucher,
                     icon: 'ios-gift',
                     text: 'Voucher'
                 }
@@ -117,7 +117,7 @@ class FooterApp extends React.Component<Props, State> {
                     text: 'Scoreboard'
                 },
                 {
-                    routeName: ScreenNames.Scoreboard,
+                    routeName: ScreenNames.Voucher,
                     icon: 'ios-gift',
                     text: 'Voucher'
                 }

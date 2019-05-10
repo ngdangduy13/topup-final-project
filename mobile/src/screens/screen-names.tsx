@@ -19,7 +19,9 @@ const ScreenNames = {
     VideoTutorial: 'VideoTutorial',
     QuizResult: 'QuizResult',
     QuizScoreboard: 'QuizScoreboard',
+    Voucher: 'Voucher',
     ResetPassFirstStep: 'ResetPassFirstStep',
+    VoucherDetail: 'VoucherDetail'
 };
 
 export default ScreenNames;

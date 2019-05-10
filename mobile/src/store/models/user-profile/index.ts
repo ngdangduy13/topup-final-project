@@ -51,6 +51,12 @@ const userProfile = createModel({
                 ...defaultState
             };
         },
+        updateRewardPoint: (state: UserInfo, payload: number) => {
+            return {
+                ...state,
+                rewardPoint: state.rewardPoint + payload
+            };
+        },
         updateUserSuccess: (state: UserInfo, payload: UpdateUserParams) => {
             const newUser = Object.assign({}, {
                 ...state,
@@ -74,6 +80,8 @@ const userProfile = createModel({
                     isMobile: true
                 });
                 const decoded: any = jwtDecode(loginResult.token);
+                console.log(decoded);
+
                 this.updateUserInfo({ ...decoded, isLoggedIn: true, token: loginResult.token });
                 this.updateCurrentRoute(ScreenNames.Discovery);
                 serviceProvider.NavigatorService().navigate(ScreenNames.Discovery, { profileImgUrl: decoded.profileImgUrl });

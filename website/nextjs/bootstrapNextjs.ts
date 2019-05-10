@@ -44,6 +44,14 @@ const setupPublicRoutes = (server: express.Express, app: next.Server) => {
   );
 
   server.get(
+    '/admin/voucher',
+    Authorize([config.roles.admin], true),
+    async (req, res) => {
+      app.render(req, res, '/admin/voucher', req.query);
+    }
+  );
+
+  server.get(
     '/admin/detail-quizz/:quizId',
     Authorize([config.roles.admin, config.roles.quizzMaster], true),
     async (req, res) => {

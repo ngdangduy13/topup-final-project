@@ -16,7 +16,9 @@ import QuestDetail from './QuestDetail';
 import VideoTutorial from './VideoTutorial';
 import QuizResult from './QuizResult';
 import QuizScoreboard from './QuizScoreboard';
+import Voucher from './Voucher';
 import ResetPassFirstStep from './ResetPassFirstStep';
+import VoucherDetail from './VoucherDetail';
 
 export {
     Login,
@@ -36,5 +38,7 @@ export {
     VideoTutorial,
     QuizResult,
     QuizScoreboard,
+    Voucher,
     ResetPassFirstStep,
+    VoucherDetail
 };

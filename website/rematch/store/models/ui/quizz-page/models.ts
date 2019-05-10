@@ -1,7 +1,8 @@
 import { ModelConfig, createModel } from '@rematch/core';
 import { ServiceProxy } from '../../../../../client/service-proxies/service-proxies';
-import { QuizzPageState } from './state';
+import { QuizzPageState, Question } from './state';
 import { IErrorPayload } from '../user-page/state';
+import { message } from 'antd';
 
 const initialState = {
   listQuizz: { data: [], total: 0 },
@@ -15,6 +16,7 @@ const initialState = {
     questionCount: 0,
     questions: [],
   },
+  questionToCreate: [],
 
   quizzListPageIndex: '',
   quizzListPageOrientation: true,
@@ -38,6 +40,13 @@ const quizzPageModel: ModelConfig<QuizzPageState> = createModel({
         isBusy: true,
       };
     },
+    onDone: (state: QuizzPageState): QuizzPageState => {
+      return {
+        ...state,
+        isBusy: false,
+      };
+    },
+
     onError: (state: QuizzPageState, payload: IErrorPayload): QuizzPageState => {
       return {
         ...state,
@@ -65,11 +74,35 @@ const quizzPageModel: ModelConfig<QuizzPageState> = createModel({
         currentQuiz: payload,
       };
     },
+    addQuestionToCreate: (state: QuizzPageState, payload: Question) => {
+      const newQuestionToCreate = state.questionToCreate.slice(0);
+      return {
+        ...state,
+        questionToCreate: [...newQuestionToCreate, { id: newQuestionToCreate.length, ...payload }],
+      };
+    },
+    deleteQuestionToCreate: (state: QuizzPageState, payload: number) => {
+      const newQuestionToCreate = state.questionToCreate.slice(0);
+      newQuestionToCreate.splice(payload, 1);
+      return {
+        ...state,
+        questionToCreate: newQuestionToCreate,
+      };
+    },
+    resetQuestionToCreate: (state: QuizzPageState, _payload: any) => {
+      const newQuestionToCreate = state.questionToCreate.slice(0);
+      newQuestionToCreate.splice(0, newQuestionToCreate.length);
+      return {
+        ...state,
+        questionToCreate: newQuestionToCreate,
+      };
+    },
   },
   effects: {
     async fetchListQuizz(_payload: any, rootState: any): Promise<void> {
       try {
         this.onLoading();
+        console.log(rootState.profileModel.token);
         const service = new ServiceProxy();
         const result = await service.getAllQuizzes(
           rootState.profileModel.token,
@@ -78,7 +111,11 @@ const quizzPageModel: ModelConfig<QuizzPageState> = createModel({
           rootState.quizzPageModels.quizzListPageIndex,
           rootState.quizzPageModels.pageSize,
           'createdAt',
-          rootState.quizzPageModels.quizzListPageOrientation
+          rootState.quizzPageModels.quizzListPageOrientation,
+          true,
+          '',
+          -1,
+          -1
         );
         if (rootState.quizzPageModels.quizzListPageOrientation) {
           this.setOrientationButtonVisibility({
@@ -117,6 +154,29 @@ const quizzPageModel: ModelConfig<QuizzPageState> = createModel({
         const quizResult = await service.findQuizz(rootState.profileModel.token, payload.id);
         this.findQuizzSuccessfully(quizResult);
       } catch (error) {
+        this.onError({ errorMessage: error.message });
+        // message.error(error.message, 3);
+      }
+    },
+    async createNewQuiz(payload: any, rootState: any): Promise<void> {
+      try {
+        this.onLoading();
+        console.log('asdasd', rootState);
+        const service = new ServiceProxy();
+        const body = {
+          coverImageUrl: payload.coverImageUrl,
+          title: payload.title,
+          description: payload.description,
+          state: payload.state,
+          questions: rootState.quizzPageModels.questionToCreate,
+        };
+        await service.createQuiz(rootState.profileModel.token, body);
+        message.success('Add new quiz successfully', 3000);
+        this.fetchListQuizz();
+        this.onDone();
+      } catch (error) {
+        message.error(error.message, 3000);
+        console.log(error);
         this.onError({ errorMessage: error.message });
         // message.error(error.message, 3);
       }

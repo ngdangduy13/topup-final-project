@@ -17,7 +17,7 @@ uploadRouter.post('/', (req, res) => {
                 res.status(500).send(err);
             }
 
-            res.json({ file: `static/temps/images/${file.name}` });
+            res.json({ file: `/static/temps/images/${file.name}` });
         });
     } catch (error) {
         logger.error(`${error.message} ${error.stack}`);

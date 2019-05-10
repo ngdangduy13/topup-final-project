@@ -40,6 +40,7 @@ export interface GeneralQuiz {
 export interface QuestionResult {
     correctAnswerCount: number;
     points: number;
+    rewardPoints: number;
 }
 
 export interface SingleQuiz {

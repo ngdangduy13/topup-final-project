@@ -15,7 +15,7 @@ export class ServiceProxy {
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
         this.http = http ? http : <any>window;
-        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3000/api";
+        this.baseUrl = baseUrl ? baseUrl : "http://localhost:3003/api";
     }
 
     /**

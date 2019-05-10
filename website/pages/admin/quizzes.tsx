@@ -5,7 +5,7 @@ import { RematchDispatch, RematchRootState } from '@rematch/core';
 import withRematch from '../../client/common/hocs/withRematch';
 import { initStore, models } from '../../rematch/store';
 import AdminLayout from '../../client/src/layouts';
-import { QuizzPageState } from '../../rematch/store/models/ui/quizz-page/state';
+import { QuizzPageState, Question } from '../../rematch/store/models/ui/quizz-page/state';
 import QuizzList from './quizz/quizz-list';
 import AddQuizz from './quizz/add-quizz';
 import { Row, Col, Button, Icon } from 'antd';
@@ -15,6 +15,10 @@ import QuizzFilter from './quizz/quizz-filter';
 
 export interface UserPageProps {
   fetchListQuizz: (payload: any) => void;
+  addQuestionToCreate: (payload: Question) => void;
+  createNewQuiz: (payload: any) => void;
+  resetQuestionToCreate: () => void;
+
   quizzPageModels: QuizzPageState;
 }
 
@@ -41,18 +45,18 @@ class QuizzPage extends React.Component<UserPageProps, any> {
       <div>
         <QuizzFilter {...this.props} />
         <Row>
-          <Col span={24} className="button-flex">
-            <div className="add">
-              <Button type="primary" onClick={this.toggleAddQuizz}>
-                <Icon type="plus" /> Add New Quiz
+          <Col span={24} className='button-flex'>
+            <div className='add'>
+              <Button type='primary' onClick={this.toggleAddQuizz}>
+                <Icon type='plus' /> Add New Quiz
               </Button>
             </div>
-            <div className="refresh">
+            <div className='refresh'>
               <Button
-                type="primary"
+                type='primary'
                 onClick={() => this.props.fetchListQuizz({})}
                 loading={this.props.quizzPageModels.isBusy}
-                icon="sync"
+                icon='sync'
               >
                 Refresh
               </Button>

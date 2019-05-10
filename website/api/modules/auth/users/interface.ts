@@ -1,5 +1,13 @@
 import { Document } from 'mongoose';
-import { IsAuditable, HasActive, PageableQuery, SortableQuery, PageableResult, HasCreationAuditInfo, HasModificationAuditInfo } from '../../../core/interfaces';
+import {
+  IsAuditable,
+  HasActive,
+  PageableQuery,
+  SortableQuery,
+  PageableResult,
+  HasCreationAuditInfo,
+  HasModificationAuditInfo,
+} from '../../../core/interfaces';
 
 export interface IUser extends Document, IsAuditable, HasActive {
   email: string;
@@ -89,6 +97,7 @@ export interface IUpdateUserResetToken extends HasModificationAuditInfo {
 export interface IUpdateUserPoints extends HasModificationAuditInfo {
   id: string;
   points: number;
+  rewardPoints: number;
 }
 
 export interface IUpdateUserRole extends HasModificationAuditInfo {
@@ -96,7 +105,7 @@ export interface IUpdateUserRole extends HasModificationAuditInfo {
   roles: [string];
 }
 
-export interface IFindUsersResult extends PageableResult<IFindUserDetail> { }
+export interface IFindUsersResult extends PageableResult<IFindUserDetail> {}
 
 export interface ICreateUserInput extends HasCreationAuditInfo, HasActive {
   email: string;

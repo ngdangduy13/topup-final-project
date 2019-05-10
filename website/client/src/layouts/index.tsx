@@ -41,7 +41,7 @@ class AdminLayout extends Component<any> {
               className="sider"
               theme={this.props.sider ? 'light' : 'dark'}
             >
-              {this.props.sider ? this.props.sider : <SideBar {...this.props} />}
+              {this.props.sider ? this.props.sider : <SideBar />}
             </Layout.Sider>
 
             <Layout.Content>

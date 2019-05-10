@@ -5,6 +5,7 @@ import language from './language/index';
 import navigation from './navigation/index';
 import quizzes from './quizzes/index';
 import scoreboard from './scoreboard/index';
+import voucher from './voucher/index';
 
 export default {
     appState,
@@ -12,5 +13,6 @@ export default {
     language,
     navigation,
     quizzes,
-    scoreboard
+    scoreboard,
+    voucher
 };

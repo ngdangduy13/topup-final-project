@@ -15,7 +15,9 @@ import {
 	QuizResult,
 	QuizScoreboard,
 	ResetPassFirstStep,
-	BeaconManager
+	BeaconManager,
+	Voucher,
+	VoucherDetail
 } from '../screens';
 import { AppState } from '../store/state';
 import { RematchDispatch } from '@rematch/core';
@@ -73,7 +75,9 @@ class AppNavigator extends React.Component<AppNavigatorProps, any> {
 			[ScreenNames.VideoTutorial]: { screen: VideoTutorial },
 			[ScreenNames.QuestDetail]: { screen: QuestDetail },
 			[ScreenNames.QuizResult]: { screen: QuizResult },
+			[ScreenNames.Voucher]: { screen: Voucher },
 			[ScreenNames.QuizScoreboard]: { screen: QuizScoreboard },
+			[ScreenNames.VoucherDetail]: { screen: VoucherDetail },
 		},
 		{
 			initialRouteName: ScreenNames.Discovery,
@@ -131,6 +135,7 @@ class AppNavigator extends React.Component<AppNavigatorProps, any> {
 	visibleFooterScreen: any[] = [
 		ScreenNames.Discovery,
 		ScreenNames.Scoreboard,
+		ScreenNames.Voucher,
 	];
 	constructor(props: any) {
 		super(props);
